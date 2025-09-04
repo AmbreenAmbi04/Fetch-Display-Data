@@ -3,7 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 
 const FetchDisplayData = () => {
-  const [posts, setPosts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,7 +11,7 @@ const FetchDisplayData = () => {
     axios
       .get("https://fakestoreapi.com/products")
       .then((response) => {
-        setPosts(response.data);
+        setProducts(response.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -33,31 +33,32 @@ const FetchDisplayData = () => {
       {error && <motion.p style={{ color: "red" }}>Error: {error.message}</motion.p>}
 
       {!loading && !error && (
-        <motion.div className="row">
-          {posts.map((post) => (
-            <motion.div key={post.id} className="col-md-4 mb-2"> 
-              <motion.div 
-                className="card h-100 shadow-sm"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.img 
-                  className="card-img-top p-3" 
-                  src={post.image} 
-                  alt={post.title} 
-                  style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
-                />
-                <motion.div className="card-body">
-                  <motion.h5 className="card-title fw-bold">{post.title}</motion.h5>
-                  <motion.p className="card-text text-muted" style={{ fontSize: "0.9rem" }}>
-                    {post.description.substring(0, 100)}...
-                  </motion.p>
-                  <motion.p className= "fw-semibold fs-5 card-footer"><motion.strong>Price:</motion.strong> ${post.price}</motion.p>
-                </motion.div>
+        <motion.ol className="list-group list-group-numbered">
+          {products.map((product) => (
+            <motion.li
+              key={product.id}
+              className="list-group-item d-flex align-items-start"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.img
+                src={product.image}
+                alt={product.title}
+                style={{ width: "80px", height: "80px", objectFit: "contain" }}
+                className="me-3"
+              />
+              <motion.div>
+                <motion.h6 className="fw-bold text-dark">{product.title}</motion.h6>
+                <motion.p className="text-muted mb-1" style={{ fontSize: "0.85rem" }}>
+                  {product.description.substring(0, 80)}...
+                </motion.p>
+                <motion.span className="fw-semibold text-success">
+                  ${product.price}
+                </motion.span>
               </motion.div>
-            </motion.div>
+            </motion.li>
           ))}
-        </motion.div>
+        </motion.ol>
       )}
     </motion.div>
   );
