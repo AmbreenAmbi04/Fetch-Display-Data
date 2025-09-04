@@ -14,8 +14,8 @@ const FetchDisplayData = () => {
         setProducts(response.data);
         setLoading(false);
       })
-      .catch((err) => {
-        setError(err);
+      .catch((error) => {
+        setError(error);
         setLoading(false);
       });
   }, []);
